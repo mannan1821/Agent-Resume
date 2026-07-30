@@ -1,3 +1,4 @@
+from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain.agents import create_agent
 from tavily import TavilyClient
 import pytesseract as pyt
