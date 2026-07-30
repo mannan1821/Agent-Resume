@@ -22,8 +22,8 @@ model = ChatGoogleGenerativeAI(
     google_api_key = GOOGLE_API_KEY
 )
 
-response = model.invoke("Hello Buddy!")
-response.content[-1]["text"]
+# response = model.invoke("Hello Buddy!")
+# response.content[-1]["text"]
 
 
 def search_latest_news_jobs(query):
