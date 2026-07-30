@@ -41,7 +41,7 @@ def search_latest_news_jobs(query):
 agent = create_agent(
     model = model,
     tools = [search_latest_news_jobs])
-agent
+# agent
 
 
 def main_agent(agent, query):
@@ -90,9 +90,9 @@ def main_agent(agent, query):
   return code
 
 
-code = main_agent(agent,"MANNAN LAMBA, AI DEVOPS EXPERT")
-from IPython import display as DISPLAY
-DISPLAY.HTML(code)
+# code = main_agent(agent,"MANNAN LAMBA, AI DEVOPS EXPERT")
+# from IPython import display as DISPLAY
+# DISPLAY.HTML(code)
 
 
 # Fetch Latest Domain related Jobs using Tavily
