@@ -15,7 +15,7 @@ import numpy as np
 
 model = ChatGoogleGenerativeAI(
     model = 'gemini-3.5-flash-lite',
-    google_api_key = GOOGLE_API_KEY
+    google_api_key = "AQ.Ab8RN6JWAS9vcT6ZtC2ESg_rNIZeGqWYdsVFLhUTgJ3htX3LuA"
 )
 
 response = model.invoke("Hello Buddy!")
@@ -28,7 +28,7 @@ def search_latest_news_jobs(query):
   tavily"""
 
   client = TavilyClient(
-      api_key  = TAVILY_API_KEY)
+      api_key  = "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")
 
   response = client.search(query)
   return response
