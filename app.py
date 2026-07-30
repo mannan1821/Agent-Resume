@@ -153,7 +153,7 @@ def get_jobs(agent,Location = "Noida,Delhi",Profile = "Junior Devops Engineer"):
 
 if st.button("Generate Resume"):
     with st.spinner("al-qaeda initiated"):
-        code = (main_agent(agent, user_info)
+        code = main_agent(agent, user_info)
         st.html(code, width = "stretch",
                unsafe_allow_javascript = True)
         st.divider()
