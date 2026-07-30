@@ -45,7 +45,7 @@ profile_op = ["Jr. Cloud Engineer", "Platform Engineer",
 profile = st. sidebar.multiselect("Select Job Profile",
 options = profile_op)
 
-usr
+usr_info = st.text_area("Write Your resume Description")
 
 model = ChatGoogleGenerativeAI(
     model = 'gemini-3.5-flash-lite',
