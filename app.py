@@ -13,6 +13,8 @@ from PIL import Image
 import pandas as pd
 import numpy as np
 
+st.set_page_config(layout="wide")
+
 TAVILY_API_KEY = "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"
 GOOGLE_API_KEY = "AQ.Ab8RN6JWAS9vcT6ZtC2ESg_rNIZeGqWYdsVFLhUTgJ3htX3LuA"
 GROQ_API_KEY =  "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"
