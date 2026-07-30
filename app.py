@@ -21,6 +21,14 @@ TAVILY_API_KEY = st.sidebar.text_input("Tavily_API", type = "password")
 GOOGLE_API_KEY = st.sidebar.text_input("Google_API", type = "password")
 GROQ_API_KEY =  st.sidebar.text_input("Groq_API", type = "password")
 
+all_API = [TAVILY_API_KEY, GROQ_API_KEY, GOOGLE_API_KEY]
+if not all(all_API):
+    st.error("Must give API keys")
+    st.stop()
+elif all(all_API):
+    st.success("API KEYS LOADED SUCCESSFULLY")
+else:
+    st.info("PASS ALL API_KEYS")
 model = ChatGoogleGenerativeAI(
     model = 'gemini-3.5-flash-lite',
     google_api_key = GOOGLE_API_KEY
