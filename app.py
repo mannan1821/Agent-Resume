@@ -126,3 +126,13 @@ def get_jobs(agent,Location = "Noida,Delhi",Profile = "Junior Devops Engineer"):
 
 # code = get_jobs(agent,"Agra,Delhi,Noida","Devops engineer")
 # DISPLAY.HTML(code)
+if st.button("Generate Resume"):
+    user_input = st.text_area("Enter your details")
+
+    code = main_agent(agent, user_input)
+
+    st.components.v1.html(
+        code,
+        height=1200,
+        scrolling=True
+    )
