@@ -1,144 +1,260 @@
-#     ==========LOAD MODULES===========
+# ========== LOAD MODULES ==========
+
 from langchain_google_genai import ChatGoogleGenerativeAI
-from langchain_groq import ChatGroq
-import langchain
 from langchain.agents import create_agent
+from langchain.tools import tool
 from tavily import TavilyClient
-import pytesseract as pyt
+
 import streamlit as st
 import os
-import time
-from PIL import Image
-import pandas as pd
-import numpy as np
+
+
+# ========== STREAMLIT CONFIG ==========
 
 st.set_page_config(layout="wide")
+
 st.title("AI RESUME GENERATION")
-st.write("""This app helps user to build customized professional Resume
-with Latest Job apply links""")
 
-st.image("bg.png")
-
-TAVILY_API_KEY = "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"
-GOOGLE_API_KEY = "AQ.Ab8RN6JWAS9vcT6ZtC2ESg_rNIZeGqWYdsVFLhUTgJ3htX3LuA"
-GROQ_API_KEY =  "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"
-
-model = ChatGoogleGenerativeAI(
-    model = 'gemini-3.5-flash-lite',
-    google_api_key = GOOGLE_API_KEY
+st.write(
+"""
+This app helps user to build customized professional Resume
+with Latest Job apply links
+"""
 )
 
-# response = model.invoke("Hello Buddy!")
-# response.content[-1]["text"]
+
+if os.path.exists("bg.png"):
+    st.image("bg.png")
 
 
-def search_latest_news_jobs(query):
-  """This function helps to fetch lastest
-  news or jobs related article using
-  tavily"""
+# ========== API KEYS ==========
 
-  client = TavilyClient(
-      api_key  = TAVILY_API_KEY)
+TAVILY_API_KEY = st.secrets["TAVILY_API_KEY"]
+GOOGLE_API_KEY = st.secrets["GOOGLE_API_KEY"]
 
-  response = client.search(query)
-  return response
 
-  # Agent Creation
+
+# ========== GEMINI MODEL ==========
+
+model = ChatGoogleGenerativeAI(
+    model="gemini-2.5-flash",
+    google_api_key=GOOGLE_API_KEY,
+    temperature=0.7
+)
+
+
+# Test Gemini connection
+
+try:
+    test = model.invoke("Hello")
+    st.success("Gemini Connected Successfully")
+
+except Exception as e:
+    st.error(e)
+
+
+
+# ========== TAVILY TOOL ==========
+
+@tool
+def search_latest_news_jobs(query: str):
+    """
+    Search latest jobs/news using Tavily
+    """
+
+    client = TavilyClient(
+        api_key=TAVILY_API_KEY
+    )
+
+    response = client.search(query)
+
+    return response
+
+
+
+# ========== CREATE AGENT ==========
+
 agent = create_agent(
-    model = model,
-    tools = [search_latest_news_jobs])
-# agent
+    model=model,
+    tools=[search_latest_news_jobs]
+)
 
+
+
+# ========== MAIN RESUME AGENT ==========
 
 def main_agent(agent, query):
-  """This is the main agent, or leader agent
-  orchestrate sub agents"""
-
-  # Giving prompt to create detailed prompt
-  # for code generation
-  prompt = """You are AI assistant and
-  below given is prompt, your
-  task is to give detailed prompt for
-  this.
-  You are a professional Resume generator
-  where user will give their personal info,
-  you have to create detailed Resume
-  for students or professional one,
-  it must be with dynamic UI and UX and,
-  with advanced CSS Professional Designing
-  Make sure to give output in HTML format only
-  no markdowns allowed
-  """
-
-  response = agent.invoke({"messages":[{'role':'user',
-                                        'content':prompt}]})
-  detailed_prompt = response['messages'][-1].content[-1]['text']
-
-  # SAVE PROMPT using File Handling
-
-  with open("prompt.txt",'w') as f:
-    f.write(detailed_prompt)
-
-  user_details = f"""Below Given is a user details
-  generate Resume based on that, if not
-  given keep: Default Resume: Python Developer
-  user details: {query}"""
-
-  final_prompt = prompt + detailed_prompt + user_details
-
-  # CODE GENERATION
-
-  response = agent.invoke({"messages":[{'role':'user',
-                                        'content':final_prompt}]})
-
-  code = response['messages'][-1].content[-1]['text']
-
-  return code
 
 
-# code = main_agent(agent,"MANNAN LAMBA, AI DEVOPS EXPERT")
-# from IPython import display as DISPLAY
-# DISPLAY.HTML(code)
+    prompt = """
+You are an AI professional Resume generator.
+
+Your task:
+Create detailed professional resumes.
+
+Requirements:
+- Modern professional UI
+- Advanced CSS design
+- Responsive HTML
+- Student and professional resume support
+- Output HTML only
+- No markdown
+"""
 
 
-# Fetch Latest Domain related Jobs using Tavily
-
-def get_jobs(agent,Location = "Noida,Delhi",Profile = "Junior Devops Engineer"):
-  Location = "Noida,Delhi"
-  Profile = "Junior Devops Engineer"
-  prompt = f"""Based on user given Job profile,
-  fetch latest jobs or job apply article
-  using Naukri, Linkedin, Indeed, or all popular
-  Job applyplatforms, Show Results with
-  JOB PROFILE NAME, LOCATION, SALARY, COMPANY NAME,
-  SHOW jobs only related to given
-  {Location} and {Profile}, output must be in
-  Professional HTML Naukri theme cards with Dynamic Design
-  Show atleast Top 10-20 results with dir"""
-
-  response = agent.invoke({"messages":[{'role':'user',
-                                          'content':prompt}]})
-
-  code = response['messages'][-1].content[-1]['text']
-
-  return code
-
-# code = get_jobs(agent,"Agra,Delhi,Noida","Devops engineer")
-# DISPLAY.HTML(code)
-user_input = st.text_area("Enter your details")
-
-if st.button("Generate Resume"):
-    code = main_agent(agent, user_input)
-
-    st.components.v1.html(
-        code,
-        height=1200,
-        scrolling=True
+    response = agent.invoke(
+        {
+            "messages":
+            [
+                {
+                    "role":"user",
+                    "content":prompt
+                }
+            ]
+        }
     )
 
 
+    detailed_prompt = response["messages"][-1].content
+
+
+    with open("prompt.txt","w") as f:
+        f.write(detailed_prompt)
+
+
+
+    user_details = f"""
+
+Generate Resume based on user details.
+
+If details are missing:
+Use default profile:
+Python Developer
+
+
+User Details:
+
+{query}
+
+"""
+
+
+    final_prompt = (
+        prompt +
+        detailed_prompt +
+        user_details
+    )
+
+
+    response = agent.invoke(
+        {
+            "messages":
+            [
+                {
+                    "role":"user",
+                    "content":final_prompt
+                }
+            ]
+        }
+    )
+
+
+    code = response["messages"][-1].content
+
+
+    return code
+
+
+
+
+# ========== JOB SEARCH AGENT ==========
+
+def get_jobs(agent):
+
+
+    prompt = """
+
+Find latest DevOps Engineer jobs.
+
+Show results in HTML format.
+
+Include:
+- Job Profile
+- Company Name
+- Location
+- Salary
+- Apply Link
+
+
+Create professional job cards UI.
+
+"""
+
+
+    response = agent.invoke(
+        {
+            "messages":
+            [
+                {
+                    "role":"user",
+                    "content":prompt
+                }
+            ]
+        }
+    )
+
+
+    code = response["messages"][-1].content
+
+
+    return code
+
+
+
+
+# ========== STREAMLIT UI ==========
+
+
+user_input = st.text_area(
+    "Enter your details"
+)
+
+
+
+if st.button("Generate Resume"):
+
+    if user_input:
+
+        with st.spinner("Generating Resume..."):
+
+            code = main_agent(
+                agent,
+                user_input
+            )
+
+
+        st.components.v1.html(
+            code,
+            height=1200,
+            scrolling=True
+        )
+
+
+    else:
+
+        st.warning(
+            "Please enter user details"
+        )
+
+
+
+
 if st.button("Find Jobs"):
-    jobs = get_jobs(agent)
+
+    with st.spinner("Finding Latest Jobs..."):
+
+        jobs = get_jobs(agent)
+
 
     st.components.v1.html(
         jobs,
