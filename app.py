@@ -45,6 +45,7 @@ profile_op = ["Jr. Cloud Engineer", "Platform Engineer",
 profile = st. sidebar.multiselect("Select Job Profile",
 options = profile_op)
 
+st.markdown("""### GET USER INFO""")
 usr_info = st.text_area("Write Your resume Description")
 
 model = ChatGoogleGenerativeAI(
@@ -149,3 +150,13 @@ def get_jobs(agent,Location = "Noida,Delhi",Profile = "Junior Devops Engineer"):
 
 # code = get_jobs(agent,"Agra,Delhi,Noida","Devops engineer")
 # DISPLAY.HTML(code) 
+
+if st.button("Generate Resume"):
+    with st.spinner("al-qaeda initiated"):
+        code = (main_agent(agent, user_info)
+        st.html(code, width = "stretch",
+               unsafe_allow_javascript = True)
+        st.divider()
+        jobe_code = get_jobs(agent, location, profile)
+        st.html(job_code , width="stretch" ,
+                unsafe_allow_javascript=True)
