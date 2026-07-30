@@ -17,9 +17,9 @@ st.image("osama.png")
 st.sidebar.title("Fill Important Details")
 st.sidebar.image("osama.png")
 
-TAVILY_API_KEY = st.sidebar.text_input("Gemini_API, type = "password")
+TAVILY_API_KEY = st.sidebar.text_input("Tavily_API, type = "password")
 GOOGLE_API_KEY = st.sidebar.text_input("Google_API, type = "password")
-GROQ_API_KEY =  st.sidebar.text_input("Tavily_API, type = "password")
+GROQ_API_KEY =  st.sidebar.text_input("Groq_API, type = "password")
 
 model = ChatGoogleGenerativeAI(
     model = 'gemini-3.5-flash-lite',
