@@ -117,5 +117,5 @@ def get_jobs(agent,Location = "Noida,Delhi",Profile = "Junior Devops Engineer"):
 
   return code
 
-code = get_jobs(agent,"Agra,Delhi,Noida","Devops engineer")
-DISPLAY.HTML(code)
+# code = get_jobs(agent,"Agra,Delhi,Noida","Devops engineer")
+# DISPLAY.HTML(code)
