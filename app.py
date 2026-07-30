@@ -17,9 +17,9 @@ st.image("osama.png")
 st.sidebar.title("Fill Important Details")
 st.sidebar.image("osama.png")
 
-TAVILY_API_KEY = "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"
-GOOGLE_API_KEY = "AQ.Ab8RN6JWAS9vcT6ZtC2ESg_rNIZeGqWYdsVFLhUTgJ3htX3LuA"
-GROQ_API_KEY =  "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"
+TAVILY_API_KEY = st.sidebar.text_input("Gemini_API, type = "password")
+GOOGLE_API_KEY = st.sidebar.text_input("Google_API, type = "password")
+GROQ_API_KEY =  st.sidebar.text_input("Tavily_API, type = "password")
 
 model = ChatGoogleGenerativeAI(
     model = 'gemini-3.5-flash-lite',
