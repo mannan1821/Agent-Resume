@@ -13,9 +13,13 @@ from PIL import Image
 import pandas as pd
 import numpy as np
 
+TAVILY_API_KEY = "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"
+GOOGLE_API_KEY = "AQ.Ab8RN6JWAS9vcT6ZtC2ESg_rNIZeGqWYdsVFLhUTgJ3htX3LuA"
+GROQ_API_KEY =  "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"
+
 model = ChatGoogleGenerativeAI(
     model = 'gemini-3.5-flash-lite',
-    google_api_key = "AQ.Ab8RN6JWAS9vcT6ZtC2ESg_rNIZeGqWYdsVFLhUTgJ3htX3LuA"
+    google_api_key = GOOGLE_API_KEY
 )
 
 response = model.invoke("Hello Buddy!")
@@ -28,7 +32,7 @@ def search_latest_news_jobs(query):
   tavily"""
 
   client = TavilyClient(
-      api_key  = "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")
+      api_key  = TAVILY_API_KEY)
 
   response = client.search(query)
   return response
