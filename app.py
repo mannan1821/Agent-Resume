@@ -14,6 +14,11 @@ import pandas as pd
 import numpy as np
 
 st.set_page_config(layout="wide")
+st.title("AI RESUME GENERATION")
+st.write("""This app helps user to build customized professional Resume
+with Latest Job apply links""")
+
+
 
 TAVILY_API_KEY = "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"
 GOOGLE_API_KEY = "AQ.Ab8RN6JWAS9vcT6ZtC2ESg_rNIZeGqWYdsVFLhUTgJ3htX3LuA"
@@ -119,5 +124,5 @@ def get_jobs(agent,Location = "Noida,Delhi",Profile = "Junior Devops Engineer"):
 
   return code
 
-# code = get_jobs(agent,"Agra,Delhi,Noida","Devops engineer")
-# DISPLAY.HTML(code)
+code = get_jobs(agent,"Agra,Delhi,Noida","Devops engineer")
+DISPLAY.HTML(code)
