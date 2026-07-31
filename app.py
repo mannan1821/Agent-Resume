@@ -14,9 +14,9 @@ st.title("AI RESUME GENERATION")
 st.write("""This app helps user to build customized professional Resume
 with Latest Job apply links""")
 
-st.image("osama.png")
+st.image("https://raw.githubusercontent.com/mannan1821/Agent-Resume/refs/heads/main/osama.png")
 st.sidebar.title("Fill Important Details")
-st.sidebar.image("osama.png")
+st.sidebar.image("https://raw.githubusercontent.com/mannan1821/Agent-Resume/refs/heads/main/osama.png")
 
 TAVILY_API_KEY = st.sidebar.text_input("Tavily_API", type = "password")
 GOOGLE_API_KEY = st.sidebar.text_input("Google_API", type = "password")
