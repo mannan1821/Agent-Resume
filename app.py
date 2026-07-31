@@ -152,10 +152,15 @@ def get_jobs(agent,Location = "Noida,Delhi",Profile = "Junior Devops Engineer"):
 
 if st.button("Generate Resume"):
     with st.spinner("al-qaeda initiated"):
-        code = main_agent(agent, user_info)
-        st.html(code, width = "stretch",
-               unsafe_allow_javascript = True)
-        st.divider()
-        job_code = get_jobs(agent, location, profile)
-        st.html(job_code , width="stretch" ,
-                unsafe_allow_javascript=True)
+        raw_code = main_agent(agent, user_info)
+        
+        code = raw_code.replace("```html", "").replace("```", "").strip()
+        
+        st.html(code, width="stretch", unsafe_allow_javascript=True)
+        
+        st.divider() # to give horizontal div
+    
+        raw_job_code = get_jobs(agent, location, profile)
+        job_code = raw_job_code.replace("```html", "").replace("```", "").strip()
+        
+        st.html(job_code, width="stretch", unsafe_allow_javascript=True)
